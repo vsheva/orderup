@@ -1,10 +1,11 @@
 import React from "react";
 import classes from './Cart.module.css'
+import Modal from '../UI/Modal'
 
 const Cart=(props)=>{
     const cartItems = <ul className={classes['cart-items']}>{[{id: "c1", name: "Pizza", amount: 2, price: 9.99}].map((item)=><li>{item.name}</li>)}</ul>  //<ul>{ }</ul>  - map -> li
     return (
-        <div >
+        <Modal>
             {cartItems}
             <div className={classes.total}>
                 <span>Total Amount</span>
@@ -16,7 +17,7 @@ const Cart=(props)=>{
             </div>
 
 
-        </div >
+        </Modal >
     )
 
 }
