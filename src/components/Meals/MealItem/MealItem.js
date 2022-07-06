@@ -1,26 +1,24 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import classes from './MealItem.module.css';
 import MealItemForm from './MealItemForm';
-import CartContext from "../../../store/cart-context"
+import CartContext from '../../../store/cart-context';
 
 const MealItem = props => {
+  const cartCtx = useContext(CartContext); //устанавливаем связь  CartContext и useContext
 
-    const cartCtx= useContext(CartContext) //устанавливаем связь  CartContext и useContext
+  //забыл передать тот validated amount //CartCtx.addItem --это оригинальный метод контекста
+  //к этой ф-ии CartCtx.addItem мы должны передать тот item, который мы направляем к редюсеру через dispatchCartAction({type:"ADD", item:item}) из CartProvider.js
 
-    //забыл передать тот validated amount //CartCtx.addItem --это оригинальный метод контекста
-    //к этой ф-ии CartCtx.addItem мы должны передать тот item, который мы направляем к редюсеру через dispatchCartAction({type:"ADD", item:item}) из CartProvider.js
+  const price = `$${props.price.toFixed(2)}`; //* почему не {..}
 
-    const price = `$${props.price.toFixed(2)}`; //* почему не {..}
-
-    const addToCartHandler =(amount)=> {
-        cartCtx.addItem({
-            id:props.id,
-            name:props.name,
-            amount:amount, //ОШИБКА БЫЛА !!! УКАЗЫВАЕМ НА AMOUNT, ко amount:props.amount,
-            price:props.price,
-        })
-    }
-
+  const addToCartHandler = amount => {
+    cartCtx.addItem({
+      id: props.id,
+      name: props.name,
+      amount: amount, //ОШИБКА БЫЛА !!! УКАЗЫВАЕМ НА AMOUNT, ко amount:props.amount,
+      price: props.price,
+    });
+  };
 
   return (
     <li className={classes.meal}>
@@ -31,9 +29,9 @@ const MealItem = props => {
       </div>
       <div>
         <MealItemForm
-            id={props.id}   //не работало без этого
-            onAddToCart={addToCartHandler}
-        //id={props.id}
+          id={props.id} //не работало без этого
+          onAddToCart={addToCartHandler}
+          //id={props.id}
         />
       </div>
     </li>
