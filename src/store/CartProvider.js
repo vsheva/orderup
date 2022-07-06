@@ -30,14 +30,40 @@ const cartReducer = (state, action) => {
       updatedItems = state.items.concat({...action.item});//соединяем cтейтовый массив пустов + actionовский item = в новый массив , т.е. в массив добавили item
     }
 
-
     return {
       items: updatedItems,
       totalAmount: updatedAmount,
     };
   }
+
+  //ЛОГИКА ПО УДАЛЕНИЮ
+
+  if (action.type === 'REMOVE') {
+    const existingCartItemIndex = state.items.findIndex(item => item.id===action.id) // находим индекс существующего товара
+    const existingItem = state.items[existingCartItemIndex]
+    const updatedTotalAmount = state.totalAmount- existingItem.price // общая цена уменьшается на цену одного
+
+    let updatedItems
+
+    if(existingItem.amount ===1) {
+      updatedItems = state.items.filter(item => item.id!==action.id) //убираем товар из списка
+    }
+    else {
+      const updatedItem = {...existingItem, amount: existingItem.amount-1 } //оставляем товар в корзине,но уменьшаем количество на 1
+      updatedItems=[...state.items] //копия старого с содержанием
+      updatedItems[existingCartItemIndex] =updatedItem // перезаписываем item для того индекса на обновленный item  с обновленным количеством
+    }
+    return { //новый стейт обьект
+      items:  updatedItems,       //state.items
+      totalAmount: updatedTotalAmount,
+    }
+
+  }
+
+
   return defaultCartState;
 };
+
 
 
 
@@ -46,10 +72,10 @@ const CartProvider = props => {
   const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState);
 
   const addItemToCartHandler = item => {
-    dispatchCartAction({ type: 'ADD', item: item });
+    dispatchCartAction({ type: 'ADD', item: item });  // в скобках наш action.type, при этом item:item (имеет свойства amount и т.д.)
   };
   const removeItemFromCartHandler = id => {
-    dispatchCartAction({ type: 'REMOVE', id: id });
+    dispatchCartAction({ type: 'REMOVE', id: id });    //в скобках наш action.type, при этом item:item (имеет свойства amount и т.д.)
   };
 
   const cartContext = {
