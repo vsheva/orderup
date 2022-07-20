@@ -23,6 +23,9 @@
 
 .content {
     padding: 1rem;
+    max-height: 30rem;
+    overflow: auto;
+    padding: 0 1rem;
 }
 
 @media (min-width: 768px) {

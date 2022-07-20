@@ -14,9 +14,7 @@ const AvailableMeals = () => {
       setIsLoading(true);//* внчале http
      const response= await fetch("https://react-http-53159-default-rtdb.firebaseio.com/meals.json")
 
-        if(!response.ok) { //Error
-            throw new Error("Something went wrong!")
-        }
+        if(!response.ok) {throw new Error("Something went wrong!")};  //Error
 
         const responseData = await response.json(); //наши данные в виде обьекта
 
