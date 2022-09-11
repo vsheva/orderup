@@ -7,14 +7,3 @@ const Card = props => {
 
 export default Card;
 
-/*
-const Card=(props)=>{
-
-    return (
-
-    )
-
-}
-
-export default Card;
-*/

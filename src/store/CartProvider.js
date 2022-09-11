@@ -46,9 +46,7 @@ const cartReducer = (state, action) => {
 
     if (existingItem.amount === 1) {
       updatedItems = state.items.filter(item => item.id !== action.id); //убираем товар из списка
-    }
-
-    else {
+    } else {
       const updatedItem = { ...existingItem, amount: existingItem.amount - 1 }; //оставляем товар в корзине,но уменьшаем количество на 1
       updatedItems = [...state.items]; //копия старого с содержанием
       updatedItems[existingCartItemIndex] = updatedItem; // перезаписываем item для того индекса на обновленный item  с обновленным количеством
@@ -58,15 +56,20 @@ const cartReducer = (state, action) => {
       items: updatedItems, //state.items
       totalAmount: updatedTotalAmount,
     };
+  };
+
+  if (action.type === 'REMOVE') {
+    return defaultCartState;
   }
 
   return defaultCartState;
 };
 
 
+
 const CartProvider = props => {
   const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState);
-  console.log("cartState",cartState);
+  console.log('cartState', cartState);
 
   const addItemToCartHandler = item => {
     dispatchCartAction({ type: 'ADD', item: item }); // в скобках наш action.type, при этом item:item (имеет свойства amount и т.д.)
@@ -74,12 +77,16 @@ const CartProvider = props => {
   const removeItemFromCartHandler = id => {
     dispatchCartAction({ type: 'REMOVE', id: id }); //в скобках наш action.type, при этом item:item (имеет свойства amount и т.д.)
   };
+  const clearCartHandler=()=>{
+    dispatchCartAction({ type: 'CLEAR'})
+  }
 
   const cartContext = {
     items: cartState.items, //новый
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    clearCart: clearCartHandler, //ф-ю положили в переменную
   };
 
   return <CartContext.Provider value={cartContext}>{props.children}</CartContext.Provider>; // записал сюда
